@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Toko</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/1157/1157005.png">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+        body{background:linear-gradient(135deg,#ff9800 0%,#e65100 100%);min-height:100vh;padding:20px}
+        .container{max-width:420px;margin:0 auto}
+        
+        .header{text-align:center;color:#fff;margin-bottom:25px}
+        .header h1{font-size:22px;display:flex;align-items:center;justify-content:center;gap:8px}
+        .header p{font-size:14px;opacity:0.9;margin-top:5px}
+        
+        .card{background:#fff;border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+        .card h2{font-size:17px;color:#e65100;margin-bottom:15px;display:flex;align-items:center;gap:6px}
+        
+        .input-group{margin-bottom:12px}
+        .input-group label{display:block;font-size:13px;color:#555;margin-bottom:6px;font-weight:500}
+        .input-group input, .input-group select{width:100%;padding:12px 14px;border:2px solid #ffcc80;border-radius:10px;font-size:15px;transition:0.2s}
+        .input-group input:focus, .input-group select:focus{outline:none;border-color:#e65100;background:#fff8f0}
+        
+        .foto-preview{width:100%;height:140px;border:2px dashed #ffcc80;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:10px;overflow:hidden;background:#fffaf5}
+        .foto-preview img{max-width:100%;max-height:100%;object-fit:contain;display:none}
+        .foto-preview span{color:#e65100;font-size:14px;text-align:center;padding:10px}
+        .foto-preview.dengan-foto span{display:none}
+        .foto-preview.dengan-foto img{display:block}
+        
+        .btn-primary{width:100%;background:linear-gradient(135deg,#4CAF50 0%,#2e7d32 100%);color:#fff;border:none;padding:13px;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 8px rgba(76,175,80,0.3)}
+        
+        .daftar-judul{font-size:16px;font-weight:bold;color:#fff;margin:25px 0 12px 0;display:flex;align-items:center;gap:6px}
+        .kategori-nama{color:#fff;font-size:15px;font-weight:bold;margin:15px 0 8px 0;padding-bottom:4px;border-bottom:2px solid rgba(255,255,255,0.3)}
+        .item-barang{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+        .item-kiri{display:flex;align-items:center;gap:12px;flex:1}
+        .item-foto{width:50px;height:50px;border-radius:8px;overflow:hidden;background:#f5f5f5}
+        .item-foto img{width:100%;height:100%;object-fit:cover}
+        .item-info strong{font-size:15px;color:#222;display:block}
+        .item-info span{font-size:13px;color:#e65100;font-weight:500}
+        
+        .btn-hapus{background:#f44336;color:#fff;border:none;padding:10px 16px;border-radius:6px;font-size:14px;font-weight:bold;cursor:pointer;transition:opacity 0.2s}
+        .btn-hapus:active{opacity:0.8}
+        
+        .kosong{text-align:center;padding:30px;color:#fff;opacity:0.8;font-size:14px}
+        
+        .latar-keluar{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999;justify-content:center;align-items:center}
+        .kotak-konfirmasi{background:#fff;padding:25px;border-radius:16px;width:85%;max-width:340px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+        .kotak-konfirmasi h3{text-align:center;margin-bottom:15px;color:#333;font-size:17px}
+        .kotak-konfirmasi p{text-align:center;margin-bottom:20px;color:#555;font-size:15px}
+        .tombol-baris{display:flex;gap:12px;justify-content:center}
+        .tombol-ya{background:#f44336;color:#fff;border:none;padding:12px 25px;border-radius:8px;font-size:15px;font-weight:bold;cursor:pointer;flex:1}
+        .tombol-tidak{background:#e0e0e0;color:#333;border:none;padding:12px 25px;border-radius:8px;font-size:15px;font-weight:bold;cursor:pointer;flex:1}
+        .tombol-ya:active,.tombol-tidak:active{opacity:0.8}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1><span class="material-icons">storefront</span> Admin Toko Saya</h1>
+        <p>Pilih Foto dari Galeri HP Kamu</p>
+    </div>
+
+    <div class="card">
+        <h2><span class="material-icons" style="font-size:20px">add_circle</span> Tambah Barang Baru</h2>
+        
+        <div class="input-group">
+            <label>Kategori / Jenis</label>
+            <select id="kategori">
+                <option value="Makanan">Makanan</option>
+                <option value="Minuman">Minuman</option>
+                <option value="Camilan">Camilan</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <label>Nama Barang</label>
+            <input type="text" id="nama" placeholder="Contoh: Kerupuk Apolo">
+        </div>
+        
+        <div class="input-group">
+            <label>Harga (Rp)</label>
+            <input type="number" id="harga" placeholder="Contoh: 5000">
+        </div>
+        
+        <div class="input-group">
+            <label>Foto Barang</label>
+            <div class="foto-preview" id="areaFoto" onclick="document.getElementById('inputFile').click()">
+                <span><span class="material-icons" style="font-size:30px;display:block;margin-bottom:5px">add_photo_alternate</span>Klik untuk pilih foto dari galeri</span>
+                <img id="pratinjauFoto" src="" alt="Pratinjau">
+            </div>
+            <input type="file" id="inputFile" accept="image/*" style="display:none" onchange="pilihFoto(this)">
+        </div>
+        
+        <button class="btn-primary" onclick="tambahBarang()">
+            <span class="material-icons" style="font-size:20px">playlist_add</span> Simpan Barang
+        </button>
+    </div>
+
+    <h3 class="daftar-judul"><span class="material-icons">list_alt</span> Daftar Barang</h3>
+    <div id="daftarBarang"></div>
+</div>
+
+<div class="latar-keluar" id="latarKonfirmasi">
+    <div class="kotak-konfirmasi">
+        <h3>Hapus Barang</h3>
+        <p id="teksKonfirmasi"></p>
+        <div class="tombol-baris">
+            <button class="tombol-tidak" onclick="tutupKonfirmasi()">Batal</button>
+            <button class="tombol-ya" id="tombolHapus">Hapus</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let barang = [];
+let fotoBase64 = '';
+let idHapusSementara = null;
+const KEY_STORAGE = 'daftarBarangToko';
+
+const daftarKategori = [
+    {id:'Makanan', nama:'Makanan'},
+    {id:'Minuman', nama:'Minuman'},
+    {id:'Camilan', nama:'Camilan'},
+    {id:'Lainnya', nama:'Lainnya'}
+];
+
+function pilihFoto(input){
+    if(input.files && input.files[0]){
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e){
+            fotoBase64 = e.target.result;
+            document.getElementById('pratinjauFoto').src = fotoBase64;
+            document.getElementById('areaFoto').classList.add('dengan-foto');
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function muatData(){
+    const simpanan = localStorage.getItem(KEY_STORAGE);
+    if(simpanan) barang = JSON.parse(simpanan);
+    tampilDaftar();
+}
+
+function simpanData(){
+    localStorage.setItem(KEY_STORAGE, JSON.stringify(barang));
+}
+
+function tambahBarang(){
+    const kategori = document.getElementById('kategori').value;
+    const nama = document.getElementById('nama').value.trim();
+    const harga = parseInt(document.getElementById('harga').value);
+    
+    if(!nama){alert('Masukkan nama barang!');return;}
+    if(!harga || harga<=0){alert('Masukkan harga yang benar!');return;}
+    
+    let gambar = fotoBase64;
+    
+    if(!gambar){
+        const ikonDefault = {
+            'Makanan':'https://cdn-icons-png.flaticon.com/128/2972/2972627.png',
+            'Minuman':'https://cdn-icons-png.flaticon.com/128/2738/2738950.png',
+            'Camilan':'https://cdn-icons-png.flaticon.com/128/877/877950.png',
+            'Lainnya':'https://cdn-icons-png.flaticon.com/128/1157/1157005.png'
+        };
+        gambar = ikonDefault[kategori];
+    }
+    
+    barang.push({id:Date.now(), kategori:kategori, nama:nama, harga:harga, gambar:gambar});
+    simpanData();
+    tampilDaftar();
+    
+    document.getElementById('nama').value = '';
+    document.getElementById('harga').value = '';
+    document.getElementById('inputFile').value = '';
+    fotoBase64 = '';
+    document.getElementById('areaFoto').classList.remove('dengan-foto');
+    
+    alert('Berhasil ditambahkan!');
+}
+
+function bukaKonfirmasi(id, nama){
+    idHapusSementara = id;
+    document.getElementById('teksKonfirmasi').textContent = 'Yakin mau hapus "' + nama + '"?';
+    document.getElementById('latarKonfirmasi').style.display = 'flex';
+}
+
+function tutupKonfirmasi(){
+    document.getElementById('latarKonfirmasi').style.display = 'none';
+    idHapusSementara = null;
+}
+
+function lanjutHapus(){
+    if(idHapusSementara !== null){
+        barang = barang.filter(b => b.id !== idHapusSementara);
+        simpanData();
+        tampilDaftar();
+        alert('Barang sudah dihapus');
+    }
+    tutupKonfirmasi();
+}
+
+function tampilDaftar(){
+    const wadah = document.getElementById('daftarBarang');
+    if(barang.length === 0){
+        wadah.innerHTML = '<p class="kosong">Belum ada barang yang ditambahkan</p>';
+        return;
+    }
+    wadah.innerHTML = '';
+    daftarKategori.forEach(kat=>{
+        const barangKat = barang.filter(b => b.kategori === kat.id);
+        if(barangKat.length > 0){
+            wadah.innerHTML += `<h4 class="kategori-nama">${kat.nama}</h4>`;
+            barangKat.forEach(b=>{
+                wadah.innerHTML += `
+                    <div class="item-barang">
+                        <div class="item-kiri">
+                            <div class="item-foto">
+                                <img src="${b.gambar}" alt="${b.nama}">
+                            </div>
+                            <div class="item-info">
+                                <strong>${b.nama}</strong>
+                                <span>Rp ${b.harga.toLocaleString('id-ID')}</span>
+                            </div>
+                        </div>
+                        <button class="btn-hapus" onclick="bukaKonfirmasi(${b.id}, '${b.nama}')">HAPUS</button>
+                    </div>
+                `;
+            });
+        }
+    });
+}
+
+document.getElementById('tombolHapus').addEventListener('click', lanjutHapus);
+
+muatData();
+</script>
+
+</body>
+</html>
